@@ -1,4 +1,4 @@
-# Chat Appplication
+# Real-Time Chat Application using Firebase
 
 Chat Application is a Flutter-based mobile app that enables users to send and receive messages in real time. The app uses **Firebase** for authentication and database services, and **SharedPreferences** for local session management.
 
