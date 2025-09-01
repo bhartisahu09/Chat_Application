@@ -77,7 +77,7 @@ Chat Application is a Flutter-based mobile app that enables users to send and re
 
 | Home Screen | Search Screen | Search User List | Search User |
 |:---:|:---:|:---:|:---:|
-| <img src="images/screenshots/5_chat1_user_homescreen" width="300"> | <img src="images/screenshots/6_chat1_search.png" width="300"> | <img src="images/screenshots/7_chat1_search_list.png" width="300"> | <img src="images/screenshots/8_chat1_search_user.png" width="300"> |
+| <img src="images/screenshots/5_chat1_user_homescreen.png" width="300"> | <img src="images/screenshots/6_chat1_search.png" width="300"> | <img src="images/screenshots/7_chat1_search_list.png" width="300"> | <img src="images/screenshots/8_chat1_search_user.png" width="300"> |
 
 | Chat1 Send Msg | 
 |:---:|
