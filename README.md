@@ -70,7 +70,7 @@ Chat Application is a Flutter-based mobile app that enables users to send and re
 ## Screenshots
 
 
-#### Chat_user1
+### Chat_user1
 | SignUp Screen | SignIn Screen | Forget Password | Reset Password |
 |:---:|:---:|:---:|:---:|
 | <img src="images/screenshots/1_signup_screen.png" width="300"> | <img src="images/screenshots/2_sigin_screen.png" width="300"> | <img src="images/screenshots/3_forget_password.png" width="300"> | <img src="images/screenshots/4_reset_pasword.png" width="300"> 
@@ -83,12 +83,12 @@ Chat Application is a Flutter-based mobile app that enables users to send and re
 |:---:|
 | <img src="images/screenshots/9_chat1_chatroom_send_msg.png" width="300"> | 
 
-#### Chat_user2
+### Chat_user2
 | Chat 2 Receive Msg | Chat2 ChatRoom Receive Msg | Chat2 Send Msg to User1 |
 |:---:|:---:|:---:|
 | <img src="images/screenshots/10_chat1_chatroom2_see_send_msg.png" width="300"> | <img src="images/screenshots/10.1_chat2_chatroom_receive_msg.png" width="300"> | <img src="images/screenshots/11_chat2_chatroom_send_msg.png" width="300"> |
 
-#### Chat_user1
+### Chat_user1
 | Chat1 Receive Msg | Chat1 ChatRoom Receive Msg |
 |:---:|:---:|
 | <img src="images/screenshots/12_chat1_receive_msg_from_chat2.png" width="300"> | <img src="images/screenshots/13_chat1_receive_msg_from_chat2_2.png" width="300"> |
