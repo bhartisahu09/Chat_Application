@@ -1,7 +1,9 @@
 import 'package:chatapp/pages/chatpage.dart';
+import 'package:chatapp/pages/signin.dart';
 import 'package:chatapp/service/database.dart';
 import 'package:chatapp/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -37,43 +39,46 @@ class _HomeState extends State<Home> {
     }
   }
 
-Widget ChatRoomList() {
-  return StreamBuilder(
-    stream: chatRoomStream,
-    builder: (context, AsyncSnapshot snapshot) {
-      print("Snapshot Connection State: ${snapshot.connectionState}");
-      print("Snapshot Data: ${snapshot.data?.docs}");
+  Widget ChatRoomList() {
+    return StreamBuilder(
+      stream: chatRoomStream,
+      builder: (context, AsyncSnapshot snapshot) {
+        print("Snapshot Connection State: ${snapshot.connectionState}");
+        print("Snapshot Data: ${snapshot.data?.docs}");
 
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
-      }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-      if (snapshot.hasError) {
-        return Center(child: Text("Error: ${snapshot.error}"));
-      }
+        if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        }
 
-      if (!snapshot.hasData || snapshot.data?.docs == null || snapshot.data?.docs.isEmpty) {
-        return Center(child: Text("No messages yet"));
-      }
+        if (!snapshot.hasData ||
+            snapshot.data?.docs == null ||
+            snapshot.data?.docs.isEmpty) {
+          return Center(child: Text("No messages yet"));
+        }
 
-      return ListView.builder(
-        padding: EdgeInsets.zero,
-        itemCount: snapshot.data.docs.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          DocumentSnapshot ds = snapshot.data.docs[index];
-          print("Chat Room Data: ${ds.data()}"); // Log the chat room data for debugging
-          return ChatRoomListTile(
-            chatRoomId: ds.id,
-            lastMessaage: ds["lastMessage"] ?? "",
-            myUserName: myUserName!,
-            time: ds["lastMessageSendTs"],
-          );
-        },
-      );
-    },
-  );
-}
+        return ListView.builder(
+          padding: EdgeInsets.zero,
+          itemCount: snapshot.data.docs.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            DocumentSnapshot ds = snapshot.data.docs[index];
+            print(
+                "Chat Room Data: ${ds.data()}"); // Log the chat room data for debugging
+            return ChatRoomListTile(
+              chatRoomId: ds.id,
+              lastMessaage: ds["lastMessage"] ?? "",
+              myUserName: myUserName!,
+              time: ds["lastMessageSendTs"],
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -82,8 +87,8 @@ Widget ChatRoomList() {
   }
 
   String getChatRoomIdByUsername(String b, String a) {
-print("data convert home:   ${a} ${b}");
-  // return "$b\_$a";
+    print("data convert home:   ${a} ${b}");
+    // return "$b\_$a";
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "$b\_$a";
     } else {
@@ -132,7 +137,7 @@ print("data convert home:   ${a} ${b}");
         search = false;
         setState(() {});
 
-        var chatRoomId = getChatRoomIdByUsername(  myUserName!, data["username"]);
+        var chatRoomId = getChatRoomIdByUsername(myUserName!, data["username"]);
         print("chatRoomId in homePage ${chatRoomId}");
         Map<String, dynamic> chatRoomInfoMap = {
           "users": [myUserName, data["username"]],
@@ -210,9 +215,66 @@ print("data convert home:   ${a} ${b}");
       body: Container(
         child: Column(
           children: [
+            SizedBox(width: 50.0),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 20.0, right: 20.0, top: 50.0, bottom: 20.0),
+              padding:
+                  const EdgeInsets.only(left: 20.0, right: 20.0, top: 50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Logout"),
+                        content:
+                            const Text("Are you sure you want to log out?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("Cancel"),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF553370),
+                            ),
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              if (mounted) {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignIn(),
+                                  ),
+                                  (route) => false,
+                                );
+                              }
+                            },
+                            child: const Text(
+                              "Yes",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3a2144),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Icon(
+                        Icons.logout,
+                        color: Color(0xffc199cd),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -238,9 +300,9 @@ print("data convert home:   ${a} ${b}");
                           ),
                         ))
                       : Container(
-                        child: Column(
-                          children: [
-                            Text(
+                          child: Column(
+                            children: [
+                              Text(
                                 "ChatUp ",
                                 style: TextStyle(
                                   color: Color(0xffc199cd),
@@ -248,7 +310,7 @@ print("data convert home:   ${a} ${b}");
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                                Text(
+                              Text(
                                 " ${myName}",
                                 style: TextStyle(
                                   color: Color(0xffc199cd),
@@ -256,9 +318,9 @@ print("data convert home:   ${a} ${b}");
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
                   GestureDetector(
                     onTap: () {
                       search = !search;
@@ -275,7 +337,7 @@ print("data convert home:   ${a} ${b}");
                         color: Color(0xffc199cd),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -294,7 +356,7 @@ print("data convert home:   ${a} ${b}");
                         padding: EdgeInsets.only(left: 10.0, right: 10.0),
                         primary: false,
                         shrinkWrap: true,
-                        children: tempSearchStore.map((element){
+                        children: tempSearchStore.map((element) {
                           return buildResultCard(element);
                         }).toList(),
                       )
@@ -345,12 +407,9 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-         onTap: () async {
-       
+      onTap: () async {
         setState(() {});
 
-       
-      
         Navigator.push(
           context,
           MaterialPageRoute(

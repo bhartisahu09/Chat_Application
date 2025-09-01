@@ -279,7 +279,7 @@ class _SignUpState extends State<SignUp> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 20.0,
+                                  height: 10.0,
                                 ),
                                 Text(
                                   " Confirm Password",
@@ -289,7 +289,7 @@ class _SignUpState extends State<SignUp> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(
-                                  height: 10.0,
+                                  height: 5.0,
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
