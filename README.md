@@ -53,7 +53,7 @@ Chat Application is a Flutter-based mobile app that enables users to send and re
 
 1. **Clone or download the project**
    ```bash
-   git clone https://github.com/bhartisahu09/Chat-App
+   git clone https://github.com/bhartisahu09/Chat_Application
    cd chat_application
    ```
 
